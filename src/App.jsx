@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import "./App.css";
 function App() {
   const [searchedCoin, setSearchedCoin] = useState("");
   const [cryptoCoins, setCryptoCoins] = useState([]);
@@ -16,7 +17,6 @@ function App() {
       };
       const response = await axios.request(options);
       const cryptoData = await response.data.result;
-      console.log(cryptoData);
       setCryptoCoins(cryptoData);
     }
     getCryptoData();
@@ -31,7 +31,7 @@ function App() {
         value={searchedCoin}
         onChange={(e) => setSearchedCoin(e.target.value)}
       />
-      <table className="w-250 border-separate border-spacing-1">
+      <table className="w-250">
         <caption>Cryptocurrency coins and information</caption>
         <thead className="bg-[#2C2C2C] text-white text-center">
           <tr>
