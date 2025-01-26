@@ -8,7 +8,7 @@ function App() {
     async function getCryptoData() {
       const options = {
         method: "GET",
-        url: "https://openapiv1.coinstats.app/coins?limit=100",
+        url: "https://openapiv1.coinstats.app/coins?limit=1000",
         headers: {
           accept: "application/json",
           "X-API-KEY": "ou4f3VFy3bFCotXiG0uf2ofDFFvgq6CLZFvjygQq/GU=",
@@ -16,6 +16,7 @@ function App() {
       };
       const response = await axios.request(options);
       const cryptoData = await response.data.result;
+      console.log(cryptoData);
       setCryptoCoins(cryptoData);
     }
     getCryptoData();
@@ -30,9 +31,9 @@ function App() {
         value={searchedCoin}
         onChange={(e) => setSearchedCoin(e.target.value)}
       />
-      <table>
+      <table className="w-250 border-separate border-spacing-1">
         <caption>Cryptocurrency coins and information</caption>
-        <thead>
+        <thead className="bg-[#2C2C2C] text-white text-center">
           <tr>
             <td>Rank</td>
             <td>Name</td>
@@ -40,9 +41,35 @@ function App() {
             <td>Market Cap</td>
             <td>Price</td>
             <td>Available Supply</td>
-            <td>Volume(24hrs)</td>
+            <td>Total Supply</td>
+            <td>Volume (24hrs)</td>
           </tr>
         </thead>
+        <tbody>
+          {cryptoCoins
+            .filter((coin) =>
+              coin.name.toLowerCase().includes(searchedCoin.toLowerCase())
+            )
+            .map((coin, id) => {
+              return (
+                <tr key={id}>
+                  <td className="text-center font-bold">{coin.rank}</td>
+                  <td className="flex justify-start gap-2.5 pl-1.5">
+                    <a href={coin.websiteUrl} target="_blank">
+                      <img src={coin.icon} alt="coin-icon" className="w-10" />
+                    </a>
+                    <p>{coin.name}</p>
+                  </td>
+                  <td className="text-center">{coin.symbol}</td>
+                  <td className="text-center">{coin.marketCap}</td>
+                  <td className="text-center">{coin.price}</td>
+                  <td className="text-center">{coin.availableSupply}</td>
+                  <td className="text-center">{coin.totalSupply}</td>
+                  <td className="text-center">{coin.volume}</td>
+                </tr>
+              );
+            })}
+        </tbody>
       </table>
     </div>
   );
